@@ -1,32 +1,10 @@
-import {
-    RootRoute,
-    Route,
-    Router,
-    RouterProvider,
-} from '@tanstack/react-router'
-import React, { StrictMode } from 'react'
+import { RouterProvider } from '@tanstack/react-router'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import Home from './pages/home'
-import Songs from './pages/songs'
+import { makeRouteTree } from './data/routes'
+import './main.css'
 
-let rootRoute = new RootRoute({
-    component: () => <div> root </div>,
-})
-
-let homeRoute = new Route({
-    path: '/',
-    getParentRoute: () => rootRoute,
-    component: Home,
-})
-
-let songRoute = new Route({
-    path: '/songs',
-    getParentRoute: () => rootRoute,
-    component: Songs,
-})
-
-const routeTree = rootRoute.addChildren([homeRoute, songRoute])
-const router = new Router({ routeTree })
+const router = makeRouteTree()
 declare module '@tanstack/react-router' {
     interface Register {
         router: typeof router
@@ -34,7 +12,7 @@ declare module '@tanstack/react-router' {
 }
 
 // Render our app!
-const rootElement = document.getElementById('app')!
+const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
